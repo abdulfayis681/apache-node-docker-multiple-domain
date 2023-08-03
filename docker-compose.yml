@@ -1,0 +1,29 @@
+version: '3'
+services:
+  apache:
+    image: httpd:2.4
+    ports:
+      - "80:80"
+    volumes:
+      - ./apache/nodeapp-proxy.conf:/usr/local/apache2/conf/nodeapp-proxy.conf
+    environment:
+      - "APACHE_CONFDIR=/usr/local/apache2/conf"
+    networks:
+      - nodeapp-network
+
+  nodeapp1:
+    build:
+      context: ./app1
+      dockerfile: Dockerfile
+    networks:
+      - nodeapp-network
+
+  nodeapp2:
+    build:
+      context: ./app2
+      dockerfile: Dockerfile
+    networks:
+      - nodeapp-network
+
+networks:
+  nodeapp-network:
